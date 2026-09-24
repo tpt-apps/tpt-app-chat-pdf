@@ -1,0 +1,19 @@
+[package]
+name = "tpt-chatpdf-engine"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+# Target-independent: no UI deps, no ort/rusqlite (both native-only), so the
+# same crate compiles for host unit tests and for the wasm32 app. The Pro
+# edition's bigger local model slots in behind the app's `pro` feature in a
+# later phase, not inside this crate.
+[dependencies]
+pdf-extract = "0.12"
+thiserror = "2"
+serde = { version = "1", features = ["derive"] }
+
+[dev-dependencies]
+# The validation tests re-extract the fixture's page text with the same
+# parser as ground truth for the no-hallucination check.
+pdf-extract = "0.12"

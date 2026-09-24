@@ -1,0 +1,69 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R 5 0 R] /Count 2 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 7 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 364 >>
+stream
+BT
+/F1 12 Tf
+14 TL
+72 720 Td
+(Garden Shed Submains - Installation Guide) Tj
+T*
+(This guide covers wiring a garden shed from a house switchboard.) Tj
+T*
+(The maximum cable run from the house switchboard to the shed is 40 metres.) Tj
+T*
+(Use 6 mm2 SDI cable for the submains.) Tj
+T*
+(The shed circuit must be protected by a 32 A RCBO at the house switchboard.) Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 6 0 R /Resources << /Font << /F1 7 0 R >> >> >>
+endobj
+6 0 obj
+<< /Length 335 >>
+stream
+BT
+/F1 12 Tf
+14 TL
+72 720 Td
+(Commissioning and Testing) Tj
+T*
+(Before energising the shed circuit, measure the earth loop impedance.) Tj
+T*
+(The earth loop impedance must be below 1.5 ohms.) Tj
+T*
+(Record all results in the schedule of test results.) Tj
+T*
+(A certificate of compliance must be issued when the work is complete.) Tj
+ET
+endstream
+endobj
+7 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 8
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000121 00000 n 
+0000000247 00000 n 
+0000000662 00000 n 
+0000000788 00000 n 
+0000001174 00000 n 
+trailer
+<< /Size 8 /Root 1 0 R >>
+startxref
+1244
+%%EOF

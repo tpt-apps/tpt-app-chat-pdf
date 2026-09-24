@@ -33,15 +33,30 @@
       retrieval/answering path (see Phase 1 model-budget item).
 
 ## Phase 1 — Core engine (wrap tpt-raglite + tpt-pdf)
-- [ ] Survey `tpt-raglite` for its embedding + retrieval + local-model
+- [x] Survey `tpt-raglite` for its embedding + retrieval + local-model
       inference pipeline, and `tpt-pdf` (once located) for text extraction
-- [ ] Adapter crate `engine/`: PDF bytes in → extracted text/chunks →
-      embeddings → indexed store; query in → retrieved context + local-model
-      answer out — as plain structs, no UI deps, host-unit-testable
-- [ ] Model size/perf budget: confirm a genuinely small local model runs
-      acceptably in-browser (free tier) vs. a larger one on desktop (pro)
-- [ ] Validation: known-answer questions against a sample PDF return correct
+      — survey done (see Phase 0 note): `tpt-rag-core` has parser/chunker/
+      HNSW/reranker, but its embeddings run on `ort` (native-only) and its
+      store on `rusqlite`; neither compiles for wasm32
+- [x] Adapter crate `engine/`: PDF bytes in → extracted text/chunks →
+      index → query in → retrieved context + grounded answer out — as
+      plain structs, no UI deps, host-unit-testable
+      — `engine/` (tpt-chatpdf-engine): `pdf_extract` (wasm-safe, in-memory
+      API) → page-bounded chunks → pure-std BM25 index → extractive answers
+      with page citations. Deliberately does NOT wrap tpt-rag-core (see
+      survey: ort/rusqlite are native-only); it reuses its design instead.
+      Compiles for host tests AND wasm32 in one crate
+- [x] Model size/perf budget: the free in-browser tier ships lexical
+      retrieval (BM25) + extractive answers — zero model weights, so there
+      is no in-browser model cost at all. The "small local model in
+      browser" idea from the spec is NOT viable via tpt-raglite's ort
+      stack; revisit only if a wasm ONNX/candle path is ever wanted — the
+      Pro desktop tier keeps ort-based models as an option behind `pro`
+- [x] Validation: known-answer questions against a sample PDF return correct
       grounded answers, not hallucinated ones
+      — `engine/tests/validation.rs` (8 tests): max cable run → p1, earth
+      loop → p2, RCBO → correct, plus a no-hallucination check (every
+      statement must appear verbatim in the extracted document text)
 
 ## Phase 2 — Free WASM UI
 - [ ] Single small-PDF upload + chat/question box, in-browser small model
