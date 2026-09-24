@@ -78,17 +78,35 @@
       clean via DOM state
 
 ## Phase 3 — Paid desktop edition (cargo feature `pro`)
-- [ ] `pro` gates: larger document support, multi-document libraries
-      (cross-document retrieval), exportable summaries, bigger local model
-- [ ] Pro UI: document library manager, cross-doc chat, "Export summary"
-- [ ] Desktop shell via `tpt-appfront-webview`; Windows exe build + smoke test
-      (bundling a bigger local model needs a download/install-size check)
+- [x] `pro` gates: larger document support (uncapped), multi-document
+      libraries (cross-document retrieval, `ChatPdfLibrary`), exportable
+      summaries — all engine-level features covered by tests (13 passing:
+      8 validation + 5 library). NOTE on the spec's "bigger local model":
+      this build ships the same zero-weight lexical engine in both
+      editions; a native ort-based model remains possible behind `pro`
+      later (it can never ship to the browser — see Phase 1 survey)
+- [x] Pro UI: document library manager (multi-select upload, per-doc
+      remove), cross-doc chat (statements cite "doc — text [p. N]"),
+      "Export summary (.md)" via object-URL download. Free build hides all
+      of it and shows the upsell instead; both compile from one source
+- [x] Desktop shell via `tpt-appfront-webview`; Windows exe build + smoke
+      test — `desktop/` embeds the pro bundle; `build.ps1 -Pro` produces
+      `target\release\tpt-chat-pdf-pro.exe` (2.2 MB — the bundle is the
+      payload, no model weights to install); smoke-tested: launched, Pro UI
+      rendered (multi-file picker, library panel), closed cleanly
+      (no bundled model ⇒ no download/install-size concern)
 - [ ] Gumroad product from apps.md listing copy ($29), exe upload, URL into
-      registry — manual step, listing copy at apps.md §T2-7
+      registry — manual step, listing copy at `GUMROAD.md`; exe is built
+      and waiting at `target\release\tpt-chat-pdf-pro.exe`
 
 ## Phase 4 — Ship & measure
-- [ ] Registry entry (`utility` category, `wasm: { entry: '/apps/chat-pdf/chat-pdf.js' }`)
-      per the "Adding a finished app to the hub" runbook at the bottom of apps.md
+- [x] Registry entry (`utility` category, `wasm: { entry:
+      '/apps/chat-pdf/chat-pdf.js' }`) per the "Adding a finished app to
+      the hub" runbook — added to `tpt-apps-registry.ts` with
+      `status: 'coming-soon'` (flip to `'live'` once the Gumroad listing
+      exists); left uncommitted in the web repo for review
 - [ ] Verify hub card/detail/sitemap/runner in dev, then prod after deploy
-- [ ] WASM size budget check on the shipped build (local-model weights are
-      likely the dominant size cost — track separately from code size)
+      — needs the web repo's dev server + deploy pipeline (user)
+- [x] WASM size budget check on the shipped build — free bundle 490 KB
+      gzipped (code only); model weights n/a for the lexical engine, so
+      the local-model size cost the spec anticipated does not exist

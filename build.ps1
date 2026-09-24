@@ -1,4 +1,4 @@
-# TPT Chat PDF - build pipeline (Windows).
+﻿# TPT Chat PDF - build pipeline (Windows).
 #
 # Free edition (default):  ./build.ps1
 #   cargo build --release --target wasm32-unknown-unknown (no pro feature)
@@ -42,7 +42,18 @@ $DefaultWebRepo = "D:\Programming\2 WIP\TPT Electrician\tpt-electrician-nz-2"
 Write-Host "== TPT Chat PDF build ==" -ForegroundColor Cyan
 
 if ($Pro) {
-    throw "The Pro edition build (trunk --features pro + the tpt-appfront-webview desktop exe) lands in Phase 3 - see todo.md."
+    Write-Host " edition: pro (uncapped documents + multi-doc library + exportable summaries)"
+    Write-Host "-- trunk build --release --features pro (standalone bundle for the desktop shell)" -ForegroundColor Cyan
+    trunk build --release --features pro
+    if ($LASTEXITCODE -ne 0) { throw "trunk build failed" }
+
+    Write-Host "-- cargo build --release -p tpt-chatpdf-desktop (webview exe)" -ForegroundColor Cyan
+    cargo build --release -p tpt-chatpdf-desktop
+    if ($LASTEXITCODE -ne 0) { throw "desktop build failed" }
+    Write-Host "   exe: target\release\tpt-chat-pdf-pro.exe (embeds dist\; serves it via app://)" -ForegroundColor Cyan
+    Write-Host "-- done" -ForegroundColor Green
+    Write-Host "   (public/apps/chat-pdf/ was not touched — run ./build.ps1 with no flags to refresh the free demo)"
+    exit 0
 }
 
 # Where the browser-loadable free bundle goes.

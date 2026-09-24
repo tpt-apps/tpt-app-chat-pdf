@@ -20,7 +20,7 @@ OUT_NAME=chat-pdf
 
 for arg in "$@"; do
   case "$arg" in
-    --pro) echo "The Pro edition build lands in Phase 3 - see todo.md." >&2; exit 2 ;;
+    --pro) echo "The Pro edition build is Windows-only for now (build.ps1 -Pro)." >&2; exit 2 ;;
     *) echo "usage: build.sh [--pro]" >&2; exit 2 ;;
   esac
 done

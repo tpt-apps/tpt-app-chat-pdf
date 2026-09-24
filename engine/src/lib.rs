@@ -12,10 +12,12 @@ mod chunk;
 mod error;
 mod extract;
 mod index;
+mod library;
 
 pub use answer::{Answer, Citation, Statement};
 pub use chunk::Chunk;
 pub use error::EngineError;
+pub use library::{ChatPdfLibrary, LibraryAnswer, LibraryStatement};
 
 use index::BM25Index;
 
@@ -78,5 +80,11 @@ impl ChatPdfEngine {
 
     pub fn chunk_count(&self) -> usize {
         self.index.len()
+    }
+
+    /// Crate-internal index access for the library's cross-document
+    /// scoring.
+    pub(crate) fn index(&self) -> &BM25Index {
+        &self.index
     }
 }

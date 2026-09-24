@@ -84,8 +84,15 @@ pub fn answer(index: &BM25Index, question: &str, top_k: usize) -> Answer {
     }
 }
 
-/// Idempotent idf-weighted overlap between query terms and sentence terms,
-/// lightly length-normalised.
+/// IDF-weighted overlap between query terms and sentence terms, lightly
+/// length-normalised. Exposed for the Pro library's cross-document ranking
+/// (per-doc statement scores must share one scale).
+pub fn score_statement(index: &BM25Index, question: &str, sentence: &str) -> f32 {
+    sentence_score(index, question, sentence)
+}
+
+/// IDF-weighted overlap between query terms and sentence terms, lightly
+/// length-normalised.
 fn sentence_score(index: &BM25Index, question: &str, sentence: &str) -> f32 {
     let query_terms = tokenize(question);
     if query_terms.is_empty() {
