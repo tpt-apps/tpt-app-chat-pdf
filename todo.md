@@ -59,10 +59,23 @@
       statement must appear verbatim in the extracted document text)
 
 ## Phase 2 — Free WASM UI
-- [ ] Single small-PDF upload + chat/question box, in-browser small model
-- [ ] Free-tier upsell copy pointing at larger documents, multi-document
-      libraries, exportable summaries, bigger model
-- [ ] Browser-verified: mount, upload, ask a question, get a grounded answer
+- [x] Single small-PDF upload + chat/question box, in-browser small model
+      — upload (10 MB / 40-page free caps, honest status line), question box,
+      transcript of extractive answers with [p. N] citations + sources line.
+      "In-browser small model" resolved as the Phase 1 survey required: the
+      free tier runs the zero-weight lexical engine (BM25 + extractive
+      answers) — nothing neural ships to the browser
+- [x] Free-tier upsell copy pointing at larger documents, multi-document
+      libraries, exportable summaries, bigger model — Pro section with the
+      four limits + link to the tools page
+- [x] Browser-verified: mount, upload, ask a question, get a grounded answer
+      — verified against the fixture PDF through the real file-input change
+      path: indexed 2 pages, asked "maximum cable run…" → "…is 40 metres.
+      [p. 1]" with sources; oversize-file and empty-question guards show
+      their messages; exactly one mount (hub contract holds). Note: the test
+      webview throttles rAF (status-line flushes stall) and fullPage
+      screenshots tile incorrectly — both test-harness artifacts, verified
+      clean via DOM state
 
 ## Phase 3 — Paid desktop edition (cargo feature `pro`)
 - [ ] `pro` gates: larger document support, multi-document libraries

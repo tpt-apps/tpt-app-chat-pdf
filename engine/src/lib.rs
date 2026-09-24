@@ -32,16 +32,29 @@ pub struct ChatPdfEngine {
 impl ChatPdfEngine {
     /// Extracts and indexes one PDF from its raw bytes.
     pub fn from_pdf_bytes(bytes: &[u8]) -> Result<Self, EngineError> {
+        Self::from_pdf_bytes_capped(bytes, usize::MAX).map(|(engine, _)| engine)
+    }
+
+    /// Indexes only the first `max_pages` pages (free-tier cap); returns
+    /// the engine plus the document's total page count so callers can say
+    /// "first 40 of 214 pages".
+    pub fn from_pdf_bytes_capped(
+        bytes: &[u8],
+        max_pages: usize,
+    ) -> Result<(Self, usize), EngineError> {
         let pages = extract::pages_from_pdf_bytes(bytes)?;
         let page_count = pages.len();
-        let chunks = chunk::chunk_pages(&pages);
+        let chunks = chunk::chunk_pages(&pages.into_iter().take(max_pages).collect::<Vec<_>>());
         if chunks.is_empty() {
             return Err(EngineError::NoExtractableText { page_count });
         }
-        Ok(Self {
-            index: BM25Index::build(chunks),
+        Ok((
+            Self {
+                index: BM25Index::build(chunks),
+                page_count: page_count.min(max_pages),
+            },
             page_count,
-        })
+        ))
     }
 
     /// Asks a question and returns grounded statements (with page
